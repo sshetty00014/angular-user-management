@@ -1,0 +1,98 @@
+<div class="container">
+    <h2>Users</h2>
+    <div class="search-box">
+        <input type="text" placeholder="Search by first or last name" [(ngModel)]="searchInput"
+            (keyup.enter)="applySearch()" (input)="searchInput === '' && applySearch()" />
+
+        <button class="search-btn" type="button" (click)="applySearch()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </button>
+    </div>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th (click)="sort('first_name')">
+                    First Name
+                    <span class="sort-icons">
+                        <span [class.active]="sortColumn() === 'first_name' && sortDirection() === 'asc'">▲</span>
+                        <span [class.active]="sortColumn() === 'first_name' && sortDirection() === 'desc'">▼</span>
+                    </span>
+                </th>
+
+                <th (click)="sort('last_name')">
+                    Last Name
+                    <span class="sort-icons">
+                        <span [class.active]="sortColumn() === 'last_name' && sortDirection() === 'asc'">▲</span>
+                        <span [class.active]="sortColumn() === 'last_name' && sortDirection() === 'desc'">▼</span>
+                    </span>
+                </th>
+
+                <th (click)="sort('age')">
+                    Age
+                    <span class="sort-icons">
+                        <span [class.active]="sortColumn() === 'age' && sortDirection() === 'asc'">▲</span>
+                        <span [class.active]="sortColumn() === 'age' && sortDirection() === 'desc'">▼</span>
+                    </span>
+                </th>
+
+                <th (click)="sort('email')">
+                    Email
+                    <span class="sort-icons">
+                        <span [class.active]="sortColumn() === 'email' && sortDirection() === 'asc'">▲</span>
+                        <span [class.active]="sortColumn() === 'email' && sortDirection() === 'desc'">▼</span>
+                    </span>
+                </th>
+
+                <th (click)="sort('web')">
+                    Website
+                    <span class="sort-icons">
+                        <span [class.active]="sortColumn() === 'web' && sortDirection() === 'asc'">▲</span>
+                        <span [class.active]="sortColumn() === 'web' && sortDirection() === 'desc'">▼</span>
+                    </span>
+                </th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+            <tr *ngFor="let user of paginatedUsers()">
+                <td>
+                    <a [routerLink]="['/users', user.id]">
+                        {{ user.first_name }}
+                    </a>
+                </td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.age }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <a [href]="user.web" target="_blank">
+                        {{ user.web }}
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination">
+
+        <button (click)="changePage(currentPage() - 1)" [disabled]="currentPage() === 1">
+            ‹
+        </button>
+
+        <button *ngFor="let page of visiblePages()" (click)="changePage(page)" [class.active]="currentPage() === page">
+            {{ page }}
+        </button>
+
+        <button (click)="changePage(currentPage() + 1)" [disabled]="currentPage() === totalPages()">
+            ›
+        </button>
+
+    </div>
+
+</div>
